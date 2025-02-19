@@ -1,0 +1,11 @@
+[package]
+name = "cb58"
+version = "0.0.1"
+edition = "2021"
+license = "Apache-2.0"
+homepage = "https://lyquor.xyz/"
+description = "Implementation of CB58 standard used by Avalanche."
+
+[dependencies]
+base58 = "0.2.0"
+sha2 = "0.10.8"
