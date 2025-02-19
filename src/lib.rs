@@ -1,19 +1,19 @@
 // The original avalanchejs reference implementation is here:
 // https://github.com/ava-labs/avalanchejs/blob/master/src/utils/base58.ts
 
-use base58::{FromBase58, ToBase58};
+pub use bs58;
 use sha2::{Digest, Sha256};
 
 /// Encode the given binary blob.
 pub fn cb58_encode<D: AsRef<[u8]>>(data: D) -> String {
     let mut buffer = data.as_ref().to_vec();
     buffer.extend(&Sha256::digest(data)[28..]);
-    buffer.to_base58()
+    bs58::encode(&buffer).into_string()
 }
 
 /// Decode from the given string and check integrity.
 pub fn cb58_decode(encoded: &str) -> Option<Vec<u8>> {
-    let mut buffer = encoded.from_base58().ok()?;
+    let mut buffer = bs58::decode(encoded).into_vec().ok()?;
     let data_len = buffer.len() - 4;
     let (data, checksum) = buffer.split_at(data_len);
     if checksum == &Sha256::digest(data)[28..] {
